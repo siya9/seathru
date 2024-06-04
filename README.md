@@ -8,3 +8,7 @@ Exploring underwater environments is crucial for underwater archaeology, marine 
 Enter the following command to execute the Python code code:
 
 py seathru-mono --image input_folder --output output_folder
+
+This is the link to the official <a href='https://github.com/nianticlabs/monodepth2/tree/d1c5f03c38305cae4e68917e472d2f9d4eda0b98'>
+Monodepth2 repo
+</a> that contains pretrained models that estimate the depthmap of images. 
