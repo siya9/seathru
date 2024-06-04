@@ -4,5 +4,7 @@ Exploring underwater environments is crucial for underwater archaeology, marine 
 
 
 # How to run 
+
 Enter the following command to execute the Python code code:
+
 py seathru-mono --image input_folder --output output_folder
