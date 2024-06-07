@@ -14,4 +14,5 @@ Monodepth2 repo
 
 The deep learning model compared against this Sea-thru enhancing technique can be obtained from the link: <a href='https://github.com/zhenqifu/PUIE-Net'>PUIE-Net</a>
 
-The 2013 Aldabra dataset used in this project can be obtained from the link: <a href='[https://github.com/zhenqifu/PUIE-Net](https://drive.google.com/file/d/1gClMHKolK7HsBc9nEOQAjLZclGWJ4sC7/view?usp=sharing)'>Aldabra dataset</a>
+The 2013 Aldabra dataset used in this project can be obtained from the following link: 
+https://drive.google.com/file/d/1gClMHKolK7HsBc9nEOQAjLZclGWJ4sC7/view?usp=sharing
