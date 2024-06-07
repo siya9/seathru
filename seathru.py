@@ -25,24 +25,23 @@ ranges and taking the darkest RGB triplets
 from that set as estimations of the backscatter
 '''
 
-def find_backscatter_estimation_points(img, depths, num_bins=10, fraction=0.01, max_vals=20, min_depth_percent=0.0):
-    z_max, z_min = np.max(depths), np.min(depths)
-    min_depth = z_min + (min_depth_percent * (z_max - z_min))
-    z_ranges = np.linspace(z_min, z_max, num_bins + 1)
-    img_norms = np.mean(img, axis=2)
-    points_r = []
-    points_g = []
-    points_b = []
-    for i in range(len(z_ranges) - 1):
-        a, b = z_ranges[i], z_ranges[i+1]
-        locs = np.where(np.logical_and(depths > min_depth, np.logical_and(depths >= a, depths <= b)))
-        norms_in_range, px_in_range, depths_in_range = img_norms[locs], img[locs], depths[locs]
-        arr = sorted(zip(norms_in_range, px_in_range, depths_in_range), key=lambda x: x[0])
-        points = arr[:min(math.ceil(fraction * len(arr)), max_vals)]
-        points_r.extend([(z, p[0]) for n, p, z in points])
-        points_g.extend([(z, p[1]) for n, p, z in points])
-        points_b.extend([(z, p[2]) for n, p, z in points])
-    return np.array(points_r), np.array(points_g), np.array(points_b)
+
+def estimate_backscatter_points(image, depth_map, num_bins=10, fraction=0.01, max_values=20, min_depth_ratio=0.0):
+    max_depth, min_depth = np.max(depth_map), np.min(depth_map)
+    min_valid_depth = min_depth + (min_depth_ratio * (max_depth - min_depth))
+    depth_bins = np.linspace(min_depth, max_depth, num_bins + 1)
+    average_intensity = np.mean(image, axis=2)
+    red_points, green_points, blue_points = [], [], []
+    for i in range(len(depth_bins) - 1):
+        lower_bound, upper_bound = depth_bins[i], depth_bins[i+1]
+        indices = np.where((depth_map > min_valid_depth) & (depth_map >= lower_bound) & (depth_map <= upper_bound))
+        norms_in_bin, pixels_in_bin, depths_in_bin = average_intensity[indices], image[indices], depth_map[indices]
+        sorted_points = sorted(zip(norms_in_bin, pixels_in_bin, depths_in_bin), key=lambda x:x[0])
+        selected_points = sorted_points[:min(math.ceil(fraction * len(sorted_points)),max_values)]
+        red_points.extend([(depth, pixel[0]) for _, pixel, depth in selected_points])
+        green_points.extend([(depth, pixel[1]) for _, pixel, depth in selected_points])
+        blue_points.extend([(depth, pixel[2]) for _, pixel, depth in selected_points])
+    return np.array(red_points), np.array(green_points), np.array(blue_points)
 
 '''
 Estimates coefficients for the backscatter curve
@@ -50,8 +49,8 @@ based on the backscatter point values and their depths
 '''
 def find_backscatter_values(B_pts, depths, restarts=10, max_mean_loss_fraction=0.1):
     B_vals, B_depths = B_pts[:, 1], B_pts[:, 0]
-    z_max, z_min = np.max(depths), np.min(depths)
-    max_mean_loss = max_mean_loss_fraction * (z_max - z_min)
+    z_max, min_depth = np.max(depths), np.min(depths)
+    max_mean_loss = max_mean_loss_fraction * (z_max - min_depth)
     coefs = None
     best_loss = np.inf
     def estimate(depths, B_inf, beta_B, J_prime, beta_D_prime):
@@ -400,7 +399,8 @@ def run_pipeline(img, depths, args):
         args.output_graphs = False
 
     print('Estimating backscatter...', flush=True)
-    ptsR, ptsG, ptsB = find_backscatter_estimation_points(img, depths, fraction=0.01, min_depth_percent=args.min_depth)
+    ptsR, ptsG, ptsB = estimate_backscatter_points(img, depths, fraction=0.01, min_depth_ratio=args.min_depth)
+    
 
     print('Finding backscatter coefficients...', flush=True)
     Br, coefsR = find_backscatter_values(ptsR, depths, restarts=25)
