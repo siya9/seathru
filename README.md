@@ -8,6 +8,8 @@ Enter the following command to execute the Python code code:
 
 py seathru-mono.py --image input_folder --output output_folder
 
+You must change the file in the path deps/monodepth2/networks/depth_decoder.py to direct to include the directory /deps/monodepth2
+
 This is the link to the official <a href='https://github.com/nianticlabs/monodepth2/tree/d1c5f03c38305cae4e68917e472d2f9d4eda0b98'>
 Monodepth2 repo
 </a> that contains pretrained models that estimate the depthmap of images. 
