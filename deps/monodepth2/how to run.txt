@@ -1,1 +1,0 @@
-py test_simple.py --image_path assets/IMG_4225.JPG --model_name mono_640x192
