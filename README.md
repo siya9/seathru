@@ -12,7 +12,7 @@ You must change the file in the path deps/monodepth2/networks/depth_decoder.py t
 
 This is the link to the official <a href='https://github.com/nianticlabs/monodepth2/tree/d1c5f03c38305cae4e68917e472d2f9d4eda0b98'>
 Monodepth2 repo
-</a> that contains pretrained models that estimate the depthmap of images. Download a pretrained model and add it to the weight folder.
+</a> that contains pretrained models that estimate the depthmap of images. Download a pretrained model and add it to the models folder.
 
 The deep learning model compared against this Sea-thru enhancing technique can be obtained from the link: <a href='https://github.com/zhenqifu/PUIE-Net'>PUIE-Net</a>
 
