@@ -18,3 +18,6 @@ The deep learning model compared against this Sea-thru enhancing technique can b
 
 The 2013 Aldabra dataset used in this project can be obtained from the following link: 
 https://drive.google.com/file/d/1gClMHKolK7HsBc9nEOQAjLZclGWJ4sC7/view?usp=sharing
+
+The NYU-dephth dataset and GAN model used to generate synthetic underwater images can be obtained from the following link:
+https://github.com/infrontofme/UWGAN_UIE
